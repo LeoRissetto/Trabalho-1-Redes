@@ -19,7 +19,6 @@ pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 
 // Função para lidar com a comunicação com o cliente
 void *handle_client(void *client_socket);
-
 // Função para enviar uma mensagem a todos os clientes, exceto o que a enviou
 void send_message_to_all(char *message, int exclude_sock);
 
@@ -105,6 +104,8 @@ void *handle_client(void *client_info)
     n = recv(client->socket, client->name, sizeof(client->name), 0);
     client->name[n - 1] = '\0'; // Remove o newline do nome
 
+    send(client->socket, "\033[F\033[J", 17, 0);
+
     printf("\n[+] %s has joined the chat.\n", client->name);
 
     // Notifica todos os clientes sobre o novo participante
@@ -120,7 +121,7 @@ void *handle_client(void *client_info)
         snprintf(message, sizeof(message), "%s: %s", client->name, buffer);
 
         // Exibe a mensagem no servidor com formatação
-        printf("\n[Message from %s]:\n%s\n", client->name, buffer);
+        printf("\n[Message from %s]:\n%s", client->name, buffer);
 
         pthread_mutex_lock(&mutex);
         send_message_to_all(message, client->socket);
