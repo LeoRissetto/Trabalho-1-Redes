@@ -1,31 +1,24 @@
-# Nome do executável
-SERVER_EXEC = server
-CLIENT_EXEC = client
-
-# Compilador e flags
+# Definição do compilador
 CC = gcc
-CFLAGS = -Wall -pthread
 
-# Regras de construção
-all: $(SERVER_EXEC) $(CLIENT_EXEC)
+# Flags de compilação
+CFLAGS = -pthread
 
-$(SERVER_EXEC): server.c
-	$(CC) $(CFLAGS) server.c -o $(SERVER_EXEC)
+# Nomes dos binários
+SERVER_BIN = server
+CLIENT_BIN = client
 
-$(CLIENT_EXEC): client.c
-	$(CC) $(CFLAGS) client.c -o $(CLIENT_EXEC)
+# Alvo padrão (compila ambos os binários)
+all: server client
 
-# Limpa os arquivos compilados
+# Compilação do servidor
+server: server.c
+	$(CC) $(CFLAGS) server.c -o $(SERVER_BIN)
+
+# Compilação do cliente
+client: client.c
+	$(CC) $(CFLAGS) client.c -o $(CLIENT_BIN)
+
+# Limpeza dos binários
 clean:
-	rm -f $(SERVER_EXEC) $(CLIENT_EXEC)
-
-# Regra para recompilar tudo
-rebuild: clean all
-
-# Regra para rodar o servidor
-run_server: $(SERVER_EXEC)
-	./$(SERVER_EXEC)
-
-# Regra para rodar o cliente
-run_client: $(CLIENT_EXEC)
-	./$(CLIENT_EXEC)
+	rm -f $(SERVER_BIN) $(CLIENT_BIN)
