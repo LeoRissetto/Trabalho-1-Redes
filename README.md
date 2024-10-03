@@ -4,9 +4,11 @@ Este projeto implementa um sistema cliente-servidor utilizando sockets TCP e thr
 
 ## Membros do Grupo
 
-- Nome do Membro 1
-- Nome do Membro 2
-- Nome do Membro 3 (substituir com os nomes corretos)
+- Leonardo Gueno Rissetto (13676482)
+- Lucas Lima Romero (13676325)
+- Luciano Gonçalves Lopes Filho (13676520)
+- Marco Antonio Gaspar Garcia (11833581)
+- Thiago Kashivagui Gonçalves (13676579)
 
 ## Sistema Operacional e Compilador
 
@@ -25,11 +27,10 @@ Isso gerará dois binários: `server` e `client`.
 ## Instruções de Execução
 
 ### Servidor
-1. Inicie o servidor executando o comando:
+1. Inicie o servidor executando o comando: ./server
 
 ### Cliente
-1. Inicie o cliente executando o comando:
-
+1. Inicie o cliente executando o comando: ./client
 
 Você pode iniciar múltiplos clientes, que irão se conectar ao servidor e participar do chat.
 
