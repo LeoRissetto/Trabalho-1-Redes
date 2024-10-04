@@ -46,6 +46,7 @@ O projeto consiste em duas partes principais: o servidor e o cliente.
 Para compilar o projeto, utilize o Makefile incluído. Execute os seguintes comandos no terminal:
 
 make          # Compila ambos os binários (servidor e cliente)
+
 make clean    # Remove os binários compilados
 
 ## 6. Execução
