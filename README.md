@@ -1,6 +1,6 @@
-# Projeto Cliente-Servidor em C
+# Projeto de Cliente-Servidor em C
 
-Este projeto implementa um sistema cliente-servidor utilizando sockets TCP e threads em C. O servidor gerencia múltiplas conexões de clientes e permite que eles enviem e recebam mensagens em um chat simples, exibindo o nome de cada cliente junto com suas mensagens.
+## Disciplina: Redes de Computadores
 
 ## Membros do Grupo
 
@@ -10,49 +10,60 @@ Este projeto implementa um sistema cliente-servidor utilizando sockets TCP e thr
 - Marco Antonio Gaspar Garcia (11833581)
 - Thiago Kashivagui Gonçalves (13676579)
 
-## Sistema Operacional e Compilador
+## 1. Resumo
+Este projeto implementa um sistema de chat em tempo real utilizando a arquitetura cliente-servidor em C. O servidor é capaz de gerenciar múltiplos clientes simultaneamente, permitindo que enviem e recebam mensagens entre si. O projeto explora o uso de sockets e threads para comunicação eficiente e sincronização entre os clientes.
 
-- **Sistema Operacional:** Linux (Testado no Ubuntu 20.04)
-- **Compilador:** GCC 9.4.0
+## 2. Objetivos
+O objetivo deste projeto é desenvolver um sistema de chat que permita a comunicação em tempo real entre múltiplos usuários. O sistema foi desenvolvido para aprimorar o entendimento sobre a implementação de protocolos de comunicação e o uso de threads em C.
 
-## Instruções de Compilação
+### Específicos:
+- Implementar um servidor que aceita conexões de múltiplos clientes.
+- Permitir que clientes se comuniquem entre si enviando mensagens.
+- Gerenciar a sincronização de mensagens entre diferentes clientes utilizando mutexes.
 
-O projeto inclui um arquivo Makefile para facilitar a compilação do cliente e do servidor. Para compilar o sistema:
+## 3. Materiais e Métodos
+### Materiais:
+- **Linguagem de programação**: C
+- **Bibliotecas utilizadas**: `<stdio.h>`, `<string.h>`, `<stdlib.h>`, `<unistd.h>`, `<arpa/inet.h>`, `<pthread.h>`
 
-1. Abra o terminal no diretório do projeto.
-2. Execute o comando:
+### Métodos:
+O projeto consiste em duas partes principais: o servidor e o cliente. 
+- **Servidor**: Escuta por conexões de clientes e gerencia a comunicação entre eles.
+- **Cliente**: Conecta ao servidor, envia mensagens e recebe mensagens de outros clientes.
 
-Isso gerará dois binários: `server` e `client`.
+## 4. Descrição
+### Servidor:
+- O servidor é iniciado e aguarda conexões na porta especificada.
+- Cada cliente conectado é gerenciado em uma thread separada, permitindo que múltiplos clientes se comuniquem simultaneamente.
+- Mensagens recebidas de um cliente são retransmitidas a todos os outros clientes conectados.
 
-## Instruções de Execução
+### Cliente:
+- O cliente se conecta ao servidor e solicita um nome de usuário.
+- Após a conexão, o cliente pode enviar mensagens que são visíveis para todos os outros clientes.
+- Mensagens recebidas são exibidas em tempo real.
 
-### Servidor
-1. Inicie o servidor executando o comando: ./server
+## 5. Instruções de Compilação
+Para compilar o projeto, utilize o Makefile incluído. Execute os seguintes comandos no terminal:
 
-### Cliente
-1. Inicie o cliente executando o comando: ./client
+make          # Compila ambos os binários (servidor e cliente)
+make clean    # Remove os binários compilados
 
-Você pode iniciar múltiplos clientes, que irão se conectar ao servidor e participar do chat.
+## 6. Execução
 
-## Verificação de Falhas
+Para executar o servidor e o cliente, siga os passos abaixo:
 
-### Conexão de Socket
-- O código trata erros de criação de sockets, falhas ao conectar e aceitar conexões. Se ocorrer algum erro, uma mensagem será exibida no terminal, e o programa será encerrado.
+1. No terminal, inicie o servidor:
+   
+./server
 
-### Transmissão de Informações
-- Ao enviar ou receber mensagens, se houver falha na transmissão, o programa detecta a desconexão e remove o cliente da lista ativa.
+2. Em outro terminal, inicie o cliente:
 
-## Arquivos Incluídos
+./client
 
-- `server.c`: Código-fonte do servidor.
-- `client.c`: Código-fonte do cliente.
-- `Makefile`: Arquivo para compilar o projeto.
-- `README.md`: Este arquivo com instruções e detalhes do projeto.
+3. Siga as instruções no terminal do cliente para entrar no chat.
 
-## Instruções Adicionais
+## 7. Conclusão
 
-- O servidor aceita até 10 clientes simultaneamente.
-- Cada cliente deve inserir um nome antes de participar do chat.
-- Ao desconectar, uma mensagem será enviada a todos os clientes informando a saída do usuário.
+Este projeto demonstrou como implementar um sistema de chat em tempo real usando sockets e threads em C. Ele fornece uma base sólida para o entendimento de comunicação em rede e gerenciamento de múltiplas conexões.
 
 
