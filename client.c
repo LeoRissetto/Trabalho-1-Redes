@@ -13,8 +13,8 @@ char buffer_send[BUFFER_SIZE]; // Buffer para enviar mensagens
 // Função para limpar a linha anterior
 void clear_line()
 {
-    printf("\033[A");
-    printf("\033[K");
+    printf("\033[A");  // Move o cursor duas linhas para cima
+    printf("\033[K");   // Limpa a linha atual
 }
 
 // Função para limpar a tela
@@ -35,7 +35,7 @@ void *receive_messages(void *sock)
     {
         buffer[n] = '\0'; // Termina a string recebida
         clear_line();
-        printf("\n%s\n", buffer); // Exibe a mensagem recebida
+        printf("%s\n", buffer); // Exibe a mensagem recebida
         printf("\n> ");
         fflush(stdout); // Limpa o buffer de saída
     }
@@ -93,7 +93,6 @@ int main()
     {
         buffer_send[strcspn(buffer_send, "\n")] = '\0';  // Remove o caractere de nova linha
         send(sock, buffer_send, strlen(buffer_send), 0); // Envia a mensagem para o servidor
-        printf("> ");
         fflush(stdout); // Limpa o buffer de saída
     }
 
