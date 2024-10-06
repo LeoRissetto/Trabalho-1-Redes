@@ -5,39 +5,35 @@
 #include <arpa/inet.h>
 #include <pthread.h>
 
-#define PORT 5566        // Porta do servidor
-#define BUFFER_SIZE 1024 // Tamanho do buffer para mensagens
+#define PORT 5566
+#define BUFFER_SIZE 1024
 
-char buffer_send[BUFFER_SIZE]; // Buffer para enviar mensagens
+char buffer_send[BUFFER_SIZE];
 
-// Função para limpar a linha anterior
 void clear_line()
 {
-    printf("\033[A");  // Move o cursor duas linhas para cima
-    printf("\033[K");   // Limpa a linha atual
+    printf("\033[A");
+    printf("\033[K");
 }
 
-// Função para limpar a tela
 void clear_screen()
 {
     printf("\033[H\033[J");
 }
 
-// Função que recebe mensagens do servidor em uma thread separada
 void *receive_messages(void *sock)
 {
     int server_sock = *(int *)sock;
-    char buffer[BUFFER_SIZE]; // Buffer para receber mensagens
+    char buffer[BUFFER_SIZE];
     int n;
 
-    // Loop para receber mensagens do servidor
     while ((n = recv(server_sock, buffer, sizeof(buffer), 0)) > 0)
     {
-        buffer[n] = '\0'; // Termina a string recebida
+        buffer[n] = '\0';
         clear_line();
-        printf("%s\n", buffer); // Exibe a mensagem recebida
+        printf("\n%s\n", buffer);
         printf("\n> ");
-        fflush(stdout); // Limpa o buffer de saída
+        fflush(stdout);
     }
 
     return NULL;
@@ -46,11 +42,10 @@ void *receive_messages(void *sock)
 int main()
 {
     int sock;
-    struct sockaddr_in addr; // Estrutura para o endereço do servidor
-    pthread_t tid;           // Thread para receber mensagens
-    char name[50];           // Nome do cliente
+    struct sockaddr_in addr;
+    pthread_t tid;
+    char name[50];
 
-    // Cria o socket do cliente
     sock = socket(AF_INET, SOCK_STREAM, 0);
     if (sock < 0)
     {
@@ -59,13 +54,11 @@ int main()
     }
     printf("\n[+]TCP Client Socket Created.\n");
 
-    // Define o endereço do servidor
     memset(&addr, '\0', sizeof(addr));
     addr.sin_family = AF_INET;
-    addr.sin_port = htons(PORT);                   // Define a porta do servidor
-    addr.sin_addr.s_addr = inet_addr("127.0.0.1"); // Endereço IP local
+    addr.sin_port = htons(PORT);
+    addr.sin_addr.s_addr = inet_addr("127.0.0.1");
 
-    // Conecta ao servidor
     if (connect(sock, (struct sockaddr *)&addr, sizeof(addr)) < 0)
     {
         perror("[-]Connect Error");
@@ -73,29 +66,31 @@ int main()
     }
     printf("\n[+]Connected to the Server.\n");
 
-    // Solicita o nome do cliente
     printf("\nEnter your name: ");
     fgets(name, 50, stdin);
-    name[strcspn(name, "\n")] = '\0';  // Remove o caractere de nova linha
-    send(sock, name, strlen(name), 0); // Envia o nome para o servidor
+    name[strcspn(name, "\n")] = '\0';
+    send(sock, name, strlen(name), 0);
 
-    clear_screen(); // Limpa a tela
+    clear_screen();
 
     printf("Welcome to the chat, %s!\n\n", name);
     printf("> ");
     fflush(stdout);
 
-    // Cria uma thread para receber mensagens
     pthread_create(&tid, NULL, receive_messages, &sock);
 
-    // Loop principal para enviar mensagens
-    while (fgets(buffer_send, BUFFER_SIZE, stdin) != NULL)
+    while (1)
     {
-        buffer_send[strcspn(buffer_send, "\n")] = '\0';  // Remove o caractere de nova linha
-        send(sock, buffer_send, strlen(buffer_send), 0); // Envia a mensagem para o servidor
-        fflush(stdout); // Limpa o buffer de saída
+        bzero(buffer_send, BUFFER_SIZE);
+        fgets(buffer_send, BUFFER_SIZE, stdin);
+        buffer_send[strcspn(buffer_send, "\n")] = '\0';
+        send(sock, buffer_send, strlen(buffer_send), 0);
+        clear_line();
+        fflush(stdout);
     }
 
-    close(sock); // Fecha o socket do cliente
+    close(sock);
+    printf("[+]Disconnected from the Server.\n");
+
     return 0;
 }
