@@ -39,7 +39,7 @@ void *handle_client(void *client_socket)
     pthread_mutex_unlock(&mutex);
 
     // Notifica todos os clientes que um novo cliente entrou no chat
-    snprintf(message, sizeof(message), "[%s joined the chat]", name);
+    snprintf(message, sizeof(message), "\n[%s joined the chat]", name);
     pthread_mutex_lock(&mutex);
     for (int i = 0; i < MAX_CLIENTS; i++)
     {
