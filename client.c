@@ -36,8 +36,39 @@ void *receive_messages(void *sock)
         fflush(stdout);
     }
 
+    // Se recv() retorna 0, o servidor encerrou a conexão
+    if (n == 0)
+    {
+        printf("\n[!] Disconnected from the server.\n");
+    }
+    else if (n < 0)
+    {
+        perror("\n[-] Error while receiving data from server");
+    }
+
+    // Finaliza o programa se a conexão for perdida
+    exit(1);  // Encerra o programa após a desconexão
+
     return NULL;
 }
+
+// void *receive_messages(void *sock)
+// {
+//     int server_sock = *(int *)sock;
+//     char buffer[BUFFER_SIZE];
+//     int n;
+
+//     while ((n = recv(server_sock, buffer, sizeof(buffer), 0)) > 0)
+//     {
+//         buffer[n] = '\0';
+//         clear_line();
+//         printf("\n%s\n", buffer);
+//         printf("\n> ");
+//         fflush(stdout);
+//     }
+
+//     return NULL;
+// }
 
 int main()
 {
@@ -49,10 +80,10 @@ int main()
     sock = socket(AF_INET, SOCK_STREAM, 0);
     if (sock < 0)
     {
-        perror("[-]Socket Error");
+        perror("[-] Socket Error");
         exit(1);
     }
-    printf("\n[+]TCP Client Socket Created.\n");
+    printf("\n[+] TCP Client Socket Created.\n");
 
     memset(&addr, '\0', sizeof(addr));
     addr.sin_family = AF_INET;
@@ -61,10 +92,10 @@ int main()
 
     if (connect(sock, (struct sockaddr *)&addr, sizeof(addr)) < 0)
     {
-        perror("[-]Connect Error");
+        perror("[-] Connect Error");
         exit(1);
     }
-    printf("\n[+]Connected to the Server.\n");
+    printf("\n[+] Connected to the Server.\n");
 
     printf("\nEnter your name: ");
     fgets(name, 50, stdin);
@@ -85,12 +116,17 @@ int main()
         fgets(buffer_send, BUFFER_SIZE, stdin);
         buffer_send[strcspn(buffer_send, "\n")] = '\0';
         send(sock, buffer_send, strlen(buffer_send), 0);
+        // int bytes_sent = send(sock, buffer_send, strlen(buffer_send), 0);
+        // if (bytes_sent == -1){
+        //     perror("Error while reaching the server.");
+        // }
+
         clear_line();
         fflush(stdout);
     }
 
     close(sock);
-    printf("[+]Disconnected from the Server.\n");
+    printf("[-] Disconnected from the Server.\n");
 
     return 0;
 }

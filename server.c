@@ -27,7 +27,7 @@ void *handle_client(void *client_socket)
     while (1) {
         recv(sock, name, 50, 0);
 
-        // Verificar se o nome já está em uso
+        // Verifying if that name is already being used
         int name_exists = 0;
         pthread_mutex_lock(&mutex);
         for (int i = 0; i < MAX_CLIENTS; i++) {
@@ -39,8 +39,8 @@ void *handle_client(void *client_socket)
         pthread_mutex_unlock(&mutex);
 
         if (name_exists) {
-            // Nome já em uso, solicitar um novo nome
-            char *error_message = "That name is already in use. Please choose another name: \n";
+            // If it already exists, request another
+            char *error_message = "Unfortunately, that name is already in use. Please choose another name: \n";
             send(sock, error_message, strlen(error_message), 0);
             bzero(name, 50);
         } else {
@@ -73,7 +73,7 @@ void *handle_client(void *client_socket)
     }
     pthread_mutex_unlock(&mutex);
 
-    printf("\n[+]Client %s connected.\n", name);
+    printf("\n[+] Client %s connected.\n", name);
 
     while ((n = recv(sock, buffer, sizeof(buffer), 0)) > 0)
     {
@@ -119,7 +119,7 @@ void *handle_client(void *client_socket)
     pthread_mutex_unlock(&mutex);
 
     close(sock);
-    printf("\n[+]Client %s disconnected.\n", name);
+    printf("\n[+] Client %s disconnected.\n", name);
     return NULL;
 }
 
@@ -140,10 +140,10 @@ int main()
     server_sock = socket(AF_INET, SOCK_STREAM, 0);
     if (server_sock < 0)
     {
-        perror("[-]Socket Error");
+        perror("[-] Socket Error");
         exit(1);
     }
-    printf("\n[+]TCP Server Socket Created.\n");
+    printf("\n[+] TCP Server Socket Created.\n");
 
     memset(&server_addr, '\0', sizeof(server_addr));
     server_addr.sin_family = AF_INET;
@@ -152,10 +152,10 @@ int main()
 
     if (bind(server_sock, (struct sockaddr *)&server_addr, sizeof(server_addr)) < 0)
     {
-        perror("[-]Bind Error");
+        perror("[-] Bind Error");
         exit(1);
     }
-    printf("\n[+]Bind to the port number: %d.\n", PORT);
+    printf("\n[+] Bind to th e port number: %d.\n", PORT);
 
     listen(server_sock, 5);
     printf("\nListening...\n");
@@ -166,7 +166,7 @@ int main()
         client_sock = accept(server_sock, (struct sockaddr *)&client_addr, &addr_size);
         if (client_sock < 0)
         {
-            perror("[-]Accept Error");
+            perror("[-] Accept Error");
             exit(1);
         }
 

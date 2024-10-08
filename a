@@ -1,0 +1,666 @@
+	.section	__TEXT,__text,regular,pure_instructions
+	.build_version macos, 13, 3	sdk_version 13, 3
+	.globl	_handle_client                  ; -- Begin function handle_client
+	.p2align	2
+_handle_client:                         ; @handle_client
+	.cfi_startproc
+; %bb.0:
+	stp	x28, x27, [sp, #-32]!           ; 16-byte Folded Spill
+	.cfi_def_cfa_offset 32
+	stp	x29, x30, [sp, #16]             ; 16-byte Folded Spill
+	add	x29, sp, #16
+	.cfi_def_cfa w29, 16
+	.cfi_offset w30, -8
+	.cfi_offset w29, -16
+	.cfi_offset w27, -24
+	.cfi_offset w28, -32
+	sub	sp, sp, #2336
+	adrp	x8, _client_sockets@GOTPAGE
+	ldr	x8, [x8, _client_sockets@GOTPAGEOFF]
+	str	x8, [sp, #104]                  ; 8-byte Folded Spill
+	adrp	x8, _client_names@GOTPAGE
+	ldr	x8, [x8, _client_names@GOTPAGEOFF]
+	str	x8, [sp, #112]                  ; 8-byte Folded Spill
+	adrp	x8, ___stack_chk_guard@GOTPAGE
+	ldr	x8, [x8, ___stack_chk_guard@GOTPAGEOFF]
+	ldr	x8, [x8]
+	stur	x8, [x29, #-24]
+	str	x0, [sp, #168]
+	ldr	x8, [sp, #168]
+	ldr	w8, [x8]
+	str	w8, [sp, #164]
+	add	x0, sp, #180
+	mov	w1, #0
+	mov	x2, #50
+	bl	_memset
+	b	LBB0_1
+LBB0_1:                                 ; =>This Loop Header: Depth=1
+                                        ;     Child Loop BB0_2 Depth 2
+	ldr	w0, [sp, #164]
+	add	x1, sp, #180
+	mov	x2, #50
+	mov	w3, #0
+	bl	_recv
+	str	wzr, [sp, #156]
+	adrp	x0, _mutex@PAGE
+	add	x0, x0, _mutex@PAGEOFF
+	bl	_pthread_mutex_lock
+	str	wzr, [sp, #152]
+	b	LBB0_2
+LBB0_2:                                 ;   Parent Loop BB0_1 Depth=1
+                                        ; =>  This Inner Loop Header: Depth=2
+	ldr	w8, [sp, #152]
+	subs	w8, w8, #10
+	cset	w8, ge
+	tbnz	w8, #0, LBB0_8
+	b	LBB0_3
+LBB0_3:                                 ;   in Loop: Header=BB0_2 Depth=2
+	ldr	x8, [sp, #104]                  ; 8-byte Folded Reload
+	ldrsw	x9, [sp, #152]
+	ldr	w8, [x8, x9, lsl #2]
+	subs	w8, w8, #0
+	cset	w8, eq
+	tbnz	w8, #0, LBB0_6
+	b	LBB0_4
+LBB0_4:                                 ;   in Loop: Header=BB0_2 Depth=2
+	ldr	x8, [sp, #112]                  ; 8-byte Folded Reload
+	ldrsw	x9, [sp, #152]
+	mov	x10, #50
+	mul	x9, x9, x10
+	add	x0, x8, x9
+	add	x1, sp, #180
+	bl	_strcmp
+	subs	w8, w0, #0
+	cset	w8, ne
+	tbnz	w8, #0, LBB0_6
+	b	LBB0_5
+LBB0_5:                                 ;   in Loop: Header=BB0_1 Depth=1
+	mov	w8, #1
+	str	w8, [sp, #156]
+	b	LBB0_8
+LBB0_6:                                 ;   in Loop: Header=BB0_2 Depth=2
+	b	LBB0_7
+LBB0_7:                                 ;   in Loop: Header=BB0_2 Depth=2
+	ldr	w8, [sp, #152]
+	add	w8, w8, #1
+	str	w8, [sp, #152]
+	b	LBB0_2
+LBB0_8:                                 ;   in Loop: Header=BB0_1 Depth=1
+	adrp	x0, _mutex@PAGE
+	add	x0, x0, _mutex@PAGEOFF
+	bl	_pthread_mutex_unlock
+	ldr	w8, [sp, #156]
+	subs	w8, w8, #0
+	cset	w8, eq
+	tbnz	w8, #0, LBB0_10
+	b	LBB0_9
+LBB0_9:                                 ;   in Loop: Header=BB0_1 Depth=1
+	adrp	x8, l_.str@PAGE
+	add	x8, x8, l_.str@PAGEOFF
+	str	x8, [sp, #144]
+	ldr	w8, [sp, #164]
+	str	w8, [sp, #100]                  ; 4-byte Folded Spill
+	ldr	x8, [sp, #144]
+	str	x8, [sp, #88]                   ; 8-byte Folded Spill
+	ldr	x0, [sp, #144]
+	bl	_strlen
+	ldr	x1, [sp, #88]                   ; 8-byte Folded Reload
+	mov	x2, x0
+	ldr	w0, [sp, #100]                  ; 4-byte Folded Reload
+	mov	w3, #0
+	bl	_send
+	add	x0, sp, #180
+	mov	w1, #0
+	mov	x2, #50
+	bl	_memset
+	b	LBB0_11
+LBB0_10:
+	b	LBB0_12
+LBB0_11:                                ;   in Loop: Header=BB0_1 Depth=1
+	b	LBB0_1
+LBB0_12:
+	adrp	x0, _mutex@PAGE
+	add	x0, x0, _mutex@PAGEOFF
+	bl	_pthread_mutex_lock
+	str	wzr, [sp, #140]
+	b	LBB0_13
+LBB0_13:                                ; =>This Inner Loop Header: Depth=1
+	ldr	w8, [sp, #140]
+	subs	w8, w8, #10
+	cset	w8, ge
+	tbnz	w8, #0, LBB0_18
+	b	LBB0_14
+LBB0_14:                                ;   in Loop: Header=BB0_13 Depth=1
+	ldr	x8, [sp, #104]                  ; 8-byte Folded Reload
+	ldrsw	x9, [sp, #140]
+	ldr	w8, [x8, x9, lsl #2]
+	ldr	w9, [sp, #164]
+	subs	w8, w8, w9
+	cset	w8, ne
+	tbnz	w8, #0, LBB0_16
+	b	LBB0_15
+LBB0_15:
+	ldr	x8, [sp, #112]                  ; 8-byte Folded Reload
+	ldrsw	x9, [sp, #140]
+	mov	x10, #50
+	mul	x9, x9, x10
+	add	x0, x8, x9
+	add	x1, sp, #180
+	mov	x2, #50
+	mov	x3, #-1
+	bl	___strncpy_chk
+	b	LBB0_18
+LBB0_16:                                ;   in Loop: Header=BB0_13 Depth=1
+	b	LBB0_17
+LBB0_17:                                ;   in Loop: Header=BB0_13 Depth=1
+	ldr	w8, [sp, #140]
+	add	w8, w8, #1
+	str	w8, [sp, #140]
+	b	LBB0_13
+LBB0_18:
+	adrp	x0, _mutex@PAGE
+	add	x0, x0, _mutex@PAGEOFF
+	str	x0, [sp, #80]                   ; 8-byte Folded Spill
+	bl	_pthread_mutex_unlock
+	mov	x9, sp
+	add	x8, sp, #180
+	str	x8, [x9]
+	add	x0, sp, #230
+	mov	x3, #1074
+	mov	x1, x3
+	mov	w2, #0
+	adrp	x4, l_.str.1@PAGE
+	add	x4, x4, l_.str.1@PAGEOFF
+	bl	___snprintf_chk
+	ldr	x0, [sp, #80]                   ; 8-byte Folded Reload
+	bl	_pthread_mutex_lock
+	str	wzr, [sp, #136]
+	b	LBB0_19
+LBB0_19:                                ; =>This Inner Loop Header: Depth=1
+	ldr	w8, [sp, #136]
+	subs	w8, w8, #10
+	cset	w8, ge
+	tbnz	w8, #0, LBB0_25
+	b	LBB0_20
+LBB0_20:                                ;   in Loop: Header=BB0_19 Depth=1
+	ldr	x8, [sp, #104]                  ; 8-byte Folded Reload
+	ldrsw	x9, [sp, #136]
+	ldr	w8, [x8, x9, lsl #2]
+	subs	w8, w8, #0
+	cset	w8, eq
+	tbnz	w8, #0, LBB0_23
+	b	LBB0_21
+LBB0_21:                                ;   in Loop: Header=BB0_19 Depth=1
+	ldr	x8, [sp, #104]                  ; 8-byte Folded Reload
+	ldrsw	x9, [sp, #136]
+	ldr	w8, [x8, x9, lsl #2]
+	ldr	w9, [sp, #164]
+	subs	w8, w8, w9
+	cset	w8, eq
+	tbnz	w8, #0, LBB0_23
+	b	LBB0_22
+LBB0_22:                                ;   in Loop: Header=BB0_19 Depth=1
+	ldr	x8, [sp, #104]                  ; 8-byte Folded Reload
+	ldrsw	x9, [sp, #136]
+	ldr	w8, [x8, x9, lsl #2]
+	str	w8, [sp, #76]                   ; 4-byte Folded Spill
+	add	x0, sp, #230
+	str	x0, [sp, #64]                   ; 8-byte Folded Spill
+	bl	_strlen
+	ldr	x1, [sp, #64]                   ; 8-byte Folded Reload
+	mov	x2, x0
+	ldr	w0, [sp, #76]                   ; 4-byte Folded Reload
+	mov	w3, #0
+	bl	_send
+	b	LBB0_23
+LBB0_23:                                ;   in Loop: Header=BB0_19 Depth=1
+	b	LBB0_24
+LBB0_24:                                ;   in Loop: Header=BB0_19 Depth=1
+	ldr	w8, [sp, #136]
+	add	w8, w8, #1
+	str	w8, [sp, #136]
+	b	LBB0_19
+LBB0_25:
+	adrp	x0, _mutex@PAGE
+	add	x0, x0, _mutex@PAGEOFF
+	bl	_pthread_mutex_unlock
+	mov	x9, sp
+	add	x8, sp, #180
+	str	x8, [x9]
+	adrp	x0, l_.str.2@PAGE
+	add	x0, x0, l_.str.2@PAGEOFF
+	bl	_printf
+	b	LBB0_26
+LBB0_26:                                ; =>This Loop Header: Depth=1
+                                        ;     Child Loop BB0_28 Depth 2
+	ldr	w0, [sp, #164]
+	add	x1, sp, #1304
+	mov	x2, #1024
+	mov	w3, #0
+	bl	_recv
+	mov	x8, x0
+	mov	x9, x0
+	str	w9, [sp, #160]
+	subs	w8, w8, #0
+	cset	w8, le
+	tbnz	w8, #0, LBB0_32
+	b	LBB0_27
+LBB0_27:                                ;   in Loop: Header=BB0_26 Depth=1
+	ldrsw	x10, [sp, #160]
+	add	x8, sp, #1304
+	mov	x9, x8
+	add	x9, x9, x10
+	strb	wzr, [x9]
+	mov	x9, sp
+	add	x10, sp, #180
+	str	x10, [x9]
+	str	x8, [x9, #8]
+	add	x0, sp, #230
+	mov	x3, #1074
+	mov	x1, x3
+	mov	w2, #0
+	adrp	x4, l_.str.3@PAGE
+	add	x4, x4, l_.str.3@PAGEOFF
+	bl	___snprintf_chk
+	adrp	x0, _mutex@PAGE
+	add	x0, x0, _mutex@PAGEOFF
+	bl	_pthread_mutex_lock
+	str	wzr, [sp, #132]
+	b	LBB0_28
+LBB0_28:                                ;   Parent Loop BB0_26 Depth=1
+                                        ; =>  This Inner Loop Header: Depth=2
+	ldr	w8, [sp, #132]
+	subs	w8, w8, #10
+	cset	w8, ge
+	tbnz	w8, #0, LBB0_31
+	b	LBB0_29
+LBB0_29:                                ;   in Loop: Header=BB0_28 Depth=2
+	ldr	x8, [sp, #104]                  ; 8-byte Folded Reload
+	ldrsw	x9, [sp, #132]
+	ldr	w8, [x8, x9, lsl #2]
+	str	w8, [sp, #60]                   ; 4-byte Folded Spill
+	add	x0, sp, #230
+	str	x0, [sp, #48]                   ; 8-byte Folded Spill
+	bl	_strlen
+	ldr	x1, [sp, #48]                   ; 8-byte Folded Reload
+	mov	x2, x0
+	ldr	w0, [sp, #60]                   ; 4-byte Folded Reload
+	mov	w3, #0
+	bl	_send
+	b	LBB0_30
+LBB0_30:                                ;   in Loop: Header=BB0_28 Depth=2
+	ldr	w8, [sp, #132]
+	add	w8, w8, #1
+	str	w8, [sp, #132]
+	b	LBB0_28
+LBB0_31:                                ;   in Loop: Header=BB0_26 Depth=1
+	adrp	x0, _mutex@PAGE
+	add	x0, x0, _mutex@PAGEOFF
+	bl	_pthread_mutex_unlock
+	mov	x9, sp
+	add	x8, sp, #230
+	str	x8, [x9]
+	adrp	x0, l_.str.4@PAGE
+	add	x0, x0, l_.str.4@PAGEOFF
+	bl	_printf
+	b	LBB0_26
+LBB0_32:
+	mov	x9, sp
+	add	x8, sp, #180
+	str	x8, [x9]
+	add	x0, sp, #230
+	mov	x3, #1074
+	mov	x1, x3
+	mov	w2, #0
+	adrp	x4, l_.str.5@PAGE
+	add	x4, x4, l_.str.5@PAGEOFF
+	bl	___snprintf_chk
+	adrp	x0, _mutex@PAGE
+	add	x0, x0, _mutex@PAGEOFF
+	bl	_pthread_mutex_lock
+	str	wzr, [sp, #128]
+	b	LBB0_33
+LBB0_33:                                ; =>This Inner Loop Header: Depth=1
+	ldr	w8, [sp, #128]
+	subs	w8, w8, #10
+	cset	w8, ge
+	tbnz	w8, #0, LBB0_39
+	b	LBB0_34
+LBB0_34:                                ;   in Loop: Header=BB0_33 Depth=1
+	ldr	x8, [sp, #104]                  ; 8-byte Folded Reload
+	ldrsw	x9, [sp, #128]
+	ldr	w8, [x8, x9, lsl #2]
+	subs	w8, w8, #0
+	cset	w8, eq
+	tbnz	w8, #0, LBB0_37
+	b	LBB0_35
+LBB0_35:                                ;   in Loop: Header=BB0_33 Depth=1
+	ldr	x8, [sp, #104]                  ; 8-byte Folded Reload
+	ldrsw	x9, [sp, #128]
+	ldr	w8, [x8, x9, lsl #2]
+	ldr	w9, [sp, #164]
+	subs	w8, w8, w9
+	cset	w8, eq
+	tbnz	w8, #0, LBB0_37
+	b	LBB0_36
+LBB0_36:                                ;   in Loop: Header=BB0_33 Depth=1
+	ldr	x8, [sp, #104]                  ; 8-byte Folded Reload
+	ldrsw	x9, [sp, #128]
+	ldr	w8, [x8, x9, lsl #2]
+	str	w8, [sp, #44]                   ; 4-byte Folded Spill
+	add	x0, sp, #230
+	str	x0, [sp, #32]                   ; 8-byte Folded Spill
+	bl	_strlen
+	ldr	x1, [sp, #32]                   ; 8-byte Folded Reload
+	mov	x2, x0
+	ldr	w0, [sp, #44]                   ; 4-byte Folded Reload
+	mov	w3, #0
+	bl	_send
+	b	LBB0_37
+LBB0_37:                                ;   in Loop: Header=BB0_33 Depth=1
+	b	LBB0_38
+LBB0_38:                                ;   in Loop: Header=BB0_33 Depth=1
+	ldr	w8, [sp, #128]
+	add	w8, w8, #1
+	str	w8, [sp, #128]
+	b	LBB0_33
+LBB0_39:
+	adrp	x0, _mutex@PAGE
+	add	x0, x0, _mutex@PAGEOFF
+	str	x0, [sp, #24]                   ; 8-byte Folded Spill
+	bl	_pthread_mutex_unlock
+	ldr	x0, [sp, #24]                   ; 8-byte Folded Reload
+	bl	_pthread_mutex_lock
+	str	wzr, [sp, #124]
+	b	LBB0_40
+LBB0_40:                                ; =>This Inner Loop Header: Depth=1
+	ldr	w8, [sp, #124]
+	subs	w8, w8, #10
+	cset	w8, ge
+	tbnz	w8, #0, LBB0_45
+	b	LBB0_41
+LBB0_41:                                ;   in Loop: Header=BB0_40 Depth=1
+	ldr	x8, [sp, #104]                  ; 8-byte Folded Reload
+	ldrsw	x9, [sp, #124]
+	ldr	w8, [x8, x9, lsl #2]
+	ldr	w9, [sp, #164]
+	subs	w8, w8, w9
+	cset	w8, ne
+	tbnz	w8, #0, LBB0_43
+	b	LBB0_42
+LBB0_42:
+	ldr	x8, [sp, #112]                  ; 8-byte Folded Reload
+	ldr	x9, [sp, #104]                  ; 8-byte Folded Reload
+	ldrsw	x10, [sp, #124]
+	mov	w1, #0
+	str	w1, [x9, x10, lsl #2]
+	ldrsw	x9, [sp, #124]
+	mov	x10, #50
+	mul	x9, x9, x10
+	add	x0, x8, x9
+	mov	x2, #50
+	mov	x3, #-1
+	bl	___memset_chk
+	b	LBB0_45
+LBB0_43:                                ;   in Loop: Header=BB0_40 Depth=1
+	b	LBB0_44
+LBB0_44:                                ;   in Loop: Header=BB0_40 Depth=1
+	ldr	w8, [sp, #124]
+	add	w8, w8, #1
+	str	w8, [sp, #124]
+	b	LBB0_40
+LBB0_45:
+	adrp	x0, _mutex@PAGE
+	add	x0, x0, _mutex@PAGEOFF
+	bl	_pthread_mutex_unlock
+	ldr	w0, [sp, #164]
+	bl	_close
+	mov	x9, sp
+	add	x8, sp, #180
+	str	x8, [x9]
+	adrp	x0, l_.str.6@PAGE
+	add	x0, x0, l_.str.6@PAGEOFF
+	bl	_printf
+	ldur	x9, [x29, #-24]
+	adrp	x8, ___stack_chk_guard@GOTPAGE
+	ldr	x8, [x8, ___stack_chk_guard@GOTPAGEOFF]
+	ldr	x8, [x8]
+	subs	x8, x8, x9
+	cset	w8, eq
+	tbnz	w8, #0, LBB0_47
+	b	LBB0_46
+LBB0_46:
+	bl	___stack_chk_fail
+LBB0_47:
+	mov	x0, #0
+	add	sp, sp, #2336
+	ldp	x29, x30, [sp, #16]             ; 16-byte Folded Reload
+	ldp	x28, x27, [sp], #32             ; 16-byte Folded Reload
+	ret
+	.cfi_endproc
+                                        ; -- End function
+	.globl	_main                           ; -- Begin function main
+	.p2align	2
+_main:                                  ; @main
+	.cfi_startproc
+; %bb.0:
+	sub	sp, sp, #112
+	.cfi_def_cfa_offset 112
+	stp	x29, x30, [sp, #96]             ; 16-byte Folded Spill
+	add	x29, sp, #96
+	.cfi_def_cfa w29, 16
+	.cfi_offset w30, -8
+	.cfi_offset w29, -16
+	adrp	x8, _client_sockets@GOTPAGE
+	ldr	x8, [x8, _client_sockets@GOTPAGEOFF]
+	str	x8, [sp, #16]                   ; 8-byte Folded Spill
+	stur	wzr, [x29, #-4]
+	str	wzr, [sp, #28]
+	b	LBB1_1
+LBB1_1:                                 ; =>This Inner Loop Header: Depth=1
+	ldr	w8, [sp, #28]
+	subs	w8, w8, #10
+	cset	w8, ge
+	tbnz	w8, #0, LBB1_4
+	b	LBB1_2
+LBB1_2:                                 ;   in Loop: Header=BB1_1 Depth=1
+	ldr	x8, [sp, #16]                   ; 8-byte Folded Reload
+	ldrsw	x9, [sp, #28]
+	mov	w1, #0
+	str	w1, [x8, x9, lsl #2]
+	ldrsw	x8, [sp, #28]
+	mov	x9, #50
+	mul	x9, x8, x9
+	adrp	x8, _client_names@GOTPAGE
+	ldr	x8, [x8, _client_names@GOTPAGEOFF]
+	add	x0, x8, x9
+	mov	x2, #50
+	mov	x3, #-1
+	bl	___memset_chk
+	b	LBB1_3
+LBB1_3:                                 ;   in Loop: Header=BB1_1 Depth=1
+	ldr	w8, [sp, #28]
+	add	w8, w8, #1
+	str	w8, [sp, #28]
+	b	LBB1_1
+LBB1_4:
+	mov	w0, #2
+	mov	w1, #1
+	mov	w2, #0
+	bl	_socket
+	stur	w0, [x29, #-8]
+	ldur	w8, [x29, #-8]
+	subs	w8, w8, #0
+	cset	w8, ge
+	tbnz	w8, #0, LBB1_6
+	b	LBB1_5
+LBB1_5:
+	adrp	x0, l_.str.7@PAGE
+	add	x0, x0, l_.str.7@PAGEOFF
+	bl	_perror
+	mov	w0, #1
+	bl	_exit
+LBB1_6:
+	adrp	x0, l_.str.8@PAGE
+	add	x0, x0, l_.str.8@PAGEOFF
+	bl	_printf
+	sub	x8, x29, #32
+	str	x8, [sp, #8]                    ; 8-byte Folded Spill
+	stur	xzr, [x29, #-32]
+	stur	xzr, [x29, #-24]
+	mov	w8, #2
+	sturb	w8, [x29, #-31]
+	mov	w8, #48661
+	sturh	w8, [x29, #-30]
+	adrp	x0, l_.str.9@PAGE
+	add	x0, x0, l_.str.9@PAGEOFF
+	bl	_inet_addr
+	ldr	x1, [sp, #8]                    ; 8-byte Folded Reload
+	stur	w0, [x29, #-28]
+	ldur	w0, [x29, #-8]
+	mov	w2, #16
+	bl	_bind
+	subs	w8, w0, #0
+	cset	w8, ge
+	tbnz	w8, #0, LBB1_8
+	b	LBB1_7
+LBB1_7:
+	adrp	x0, l_.str.10@PAGE
+	add	x0, x0, l_.str.10@PAGEOFF
+	bl	_perror
+	mov	w0, #1
+	bl	_exit
+LBB1_8:
+	mov	x9, sp
+	mov	x8, #5566
+	str	x8, [x9]
+	adrp	x0, l_.str.11@PAGE
+	add	x0, x0, l_.str.11@PAGEOFF
+	bl	_printf
+	ldur	w0, [x29, #-8]
+	mov	w1, #5
+	bl	_listen
+	adrp	x0, l_.str.12@PAGE
+	add	x0, x0, l_.str.12@PAGEOFF
+	bl	_printf
+	b	LBB1_9
+LBB1_9:                                 ; =>This Loop Header: Depth=1
+                                        ;     Child Loop BB1_12 Depth 2
+	add	x2, sp, #44
+	mov	w8, #16
+	str	w8, [sp, #44]
+	ldur	w0, [x29, #-8]
+	add	x1, sp, #48
+	bl	_accept
+	stur	w0, [x29, #-12]
+	ldur	w8, [x29, #-12]
+	subs	w8, w8, #0
+	cset	w8, ge
+	tbnz	w8, #0, LBB1_11
+	b	LBB1_10
+LBB1_10:
+	adrp	x0, l_.str.13@PAGE
+	add	x0, x0, l_.str.13@PAGEOFF
+	bl	_perror
+	mov	w0, #1
+	bl	_exit
+LBB1_11:                                ;   in Loop: Header=BB1_9 Depth=1
+	adrp	x0, _mutex@PAGE
+	add	x0, x0, _mutex@PAGEOFF
+	bl	_pthread_mutex_lock
+	str	wzr, [sp, #24]
+	b	LBB1_12
+LBB1_12:                                ;   Parent Loop BB1_9 Depth=1
+                                        ; =>  This Inner Loop Header: Depth=2
+	ldr	w8, [sp, #24]
+	subs	w8, w8, #10
+	cset	w8, ge
+	tbnz	w8, #0, LBB1_17
+	b	LBB1_13
+LBB1_13:                                ;   in Loop: Header=BB1_12 Depth=2
+	ldr	x8, [sp, #16]                   ; 8-byte Folded Reload
+	ldrsw	x9, [sp, #24]
+	ldr	w8, [x8, x9, lsl #2]
+	subs	w8, w8, #0
+	cset	w8, ne
+	tbnz	w8, #0, LBB1_15
+	b	LBB1_14
+LBB1_14:                                ;   in Loop: Header=BB1_9 Depth=1
+	ldr	x9, [sp, #16]                   ; 8-byte Folded Reload
+	ldur	w8, [x29, #-12]
+	ldrsw	x10, [sp, #24]
+	str	w8, [x9, x10, lsl #2]
+	b	LBB1_17
+LBB1_15:                                ;   in Loop: Header=BB1_12 Depth=2
+	b	LBB1_16
+LBB1_16:                                ;   in Loop: Header=BB1_12 Depth=2
+	ldr	w8, [sp, #24]
+	add	w8, w8, #1
+	str	w8, [sp, #24]
+	b	LBB1_12
+LBB1_17:                                ;   in Loop: Header=BB1_9 Depth=1
+	adrp	x0, _mutex@PAGE
+	add	x0, x0, _mutex@PAGEOFF
+	bl	_pthread_mutex_unlock
+	add	x0, sp, #32
+	mov	x1, #0
+	adrp	x2, _handle_client@PAGE
+	add	x2, x2, _handle_client@PAGEOFF
+	sub	x3, x29, #12
+	bl	_pthread_create
+	b	LBB1_9
+	.cfi_endproc
+                                        ; -- End function
+	.section	__DATA,__data
+	.globl	_mutex                          ; @mutex
+	.p2align	3
+_mutex:
+	.quad	850045863                       ; 0x32aaaba7
+	.space	56
+
+	.comm	_client_sockets,40,2            ; @client_sockets
+	.comm	_client_names,500,0             ; @client_names
+	.section	__TEXT,__cstring,cstring_literals
+l_.str:                                 ; @.str
+	.asciz	"That name is already in use. Please choose another name: \n"
+
+l_.str.1:                               ; @.str.1
+	.asciz	"[%s joined the chat]"
+
+l_.str.2:                               ; @.str.2
+	.asciz	"\n[+]Client %s connected.\n"
+
+l_.str.3:                               ; @.str.3
+	.asciz	"%s: %s"
+
+l_.str.4:                               ; @.str.4
+	.asciz	"\n%s\n"
+
+l_.str.5:                               ; @.str.5
+	.asciz	"[%s left the chat]"
+
+l_.str.6:                               ; @.str.6
+	.asciz	"\n[+]Client %s disconnected.\n"
+
+l_.str.7:                               ; @.str.7
+	.asciz	"[-]Socket Error"
+
+l_.str.8:                               ; @.str.8
+	.asciz	"\n[+]TCP Server Socket Created.\n"
+
+l_.str.9:                               ; @.str.9
+	.asciz	"192.0.0.2"
+
+l_.str.10:                              ; @.str.10
+	.asciz	"[-]Bind Error"
+
+l_.str.11:                              ; @.str.11
+	.asciz	"\n[+]Bind to the port number: %d.\n"
+
+l_.str.12:                              ; @.str.12
+	.asciz	"\nListening...\n"
+
+l_.str.13:                              ; @.str.13
+	.asciz	"[-]Accept Error"
+
+.subsections_via_symbols
