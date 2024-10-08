@@ -23,7 +23,31 @@ void *handle_client(void *client_socket)
 
     // Receive the name of the client
     bzero(name, 50);
-    recv(sock, name, 50, 0);
+    
+    while (1) {
+        recv(sock, name, 50, 0);
+
+        // Verificar se o nome já está em uso
+        int name_exists = 0;
+        pthread_mutex_lock(&mutex);
+        for (int i = 0; i < MAX_CLIENTS; i++) {
+            if (client_sockets[i] != 0 && strcmp(client_names[i], name) == 0) {
+                name_exists = 1;
+                break;
+            }
+        }
+        pthread_mutex_unlock(&mutex);
+
+        if (name_exists) {
+            // Nome já em uso, solicitar um novo nome
+            char *error_message = "That name is already in use. Please choose another name: \n";
+            send(sock, error_message, strlen(error_message), 0);
+            bzero(name, 50);
+        } else {
+            // Nome único, armazenar e sair do loop
+            break;
+        }
+    }
 
     // Store the client name in the array
     pthread_mutex_lock(&mutex);
