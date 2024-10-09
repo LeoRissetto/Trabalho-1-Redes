@@ -52,24 +52,6 @@ void *receive_messages(void *sock)
     return NULL;
 }
 
-// void *receive_messages(void *sock)
-// {
-//     int server_sock = *(int *)sock;
-//     char buffer[BUFFER_SIZE];
-//     int n;
-
-//     while ((n = recv(server_sock, buffer, sizeof(buffer), 0)) > 0)
-//     {
-//         buffer[n] = '\0';
-//         clear_line();
-//         printf("\n%s\n", buffer);
-//         printf("\n> ");
-//         fflush(stdout);
-//     }
-
-//     return NULL;
-// }
-
 int main()
 {
     int sock;
@@ -109,9 +91,13 @@ int main()
     fflush(stdout);
 
     pthread_create(&tid, NULL, receive_messages, &sock);
-
+    
+    int first_time = 0;
     while (1)
-    {
+    {   
+        if (first_time++ == 0){
+            clear_screen();
+        }
         bzero(buffer_send, BUFFER_SIZE);
         fgets(buffer_send, BUFFER_SIZE, stdin);
         buffer_send[strcspn(buffer_send, "\n")] = '\0';

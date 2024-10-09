@@ -9,25 +9,27 @@
 #define MAX_CLIENTS 10
 #define BUFFER_SIZE 1024
 
-int client_sockets[MAX_CLIENTS];
-char client_names[MAX_CLIENTS][50]; // Array to store client names
+int client_sockets[MAX_CLIENTS];    // Array que armazena os sockets dos clientes
+char client_names[MAX_CLIENTS][50]; // Array que armazena os nomes dos clientes
 pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 
+// Função para lidar com clientes
 void *handle_client(void *client_socket)
 {
     int sock = *(int *)client_socket;
     char buffer[BUFFER_SIZE];
-    char message[BUFFER_SIZE + 50]; // Buffer to hold the name + message
+    char message[BUFFER_SIZE + 50]; // Buffer que guarda nome +
     int n;
     char name[50];
 
-    // Receive the name of the client
+    // Recebe o nome do cliente
     bzero(name, 50);
     
+    // Loop para garantir que o nome escolhido não está em uso
     while (1) {
         recv(sock, name, 50, 0);
 
-        // Verifying if that name is already being used
+        // Verificação do nome, se já está em uso, informa e reinicia
         int name_exists = 0;
         pthread_mutex_lock(&mutex);
         for (int i = 0; i < MAX_CLIENTS; i++) {
@@ -40,8 +42,9 @@ void *handle_client(void *client_socket)
 
         if (name_exists) {
             // If it already exists, request another
-            char *error_message = "Unfortunately, that name is already in use. Please choose another name: \n";
-            send(sock, error_message, strlen(error_message), 0);
+            char name_error_message[256];
+            snprintf(name_error_message, sizeof(name_error_message), "Unfortunately, the username \"%s\" is already in use. Please, choose another name: ]", name);
+            send(sock, name_error_message, strlen(name_error_message), 0);
             bzero(name, 50);
         } else {
             // Nome único, armazenar e sair do loop
@@ -61,7 +64,7 @@ void *handle_client(void *client_socket)
     }
     pthread_mutex_unlock(&mutex);
 
-    // Notify all clients about the new connection
+    // Notifica todos os clientes sobre uma nova conexão
     snprintf(message, sizeof(message), "[%s joined the chat]", name);
     pthread_mutex_lock(&mutex);
     for (int i = 0; i < MAX_CLIENTS; i++)
@@ -75,14 +78,15 @@ void *handle_client(void *client_socket)
 
     printf("\n[+] Client %s connected.\n", name);
 
+    // Loop que recebe todas as mensagens dos clientes
     while ((n = recv(sock, buffer, sizeof(buffer), 0)) > 0)
     {
         buffer[n] = '\0';
 
-        // Prepare the message with the client's name
+        // Prepara a mensagem com o nome do cliente
         snprintf(message, sizeof(message), "%s: %s", name, buffer);
 
-        // Broadcast the message to all clients
+        // Broadcast a mensagem para todos os clients
         pthread_mutex_lock(&mutex);
         for (int i = 0; i < MAX_CLIENTS; i++)
         {
@@ -93,7 +97,7 @@ void *handle_client(void *client_socket)
         printf("\n%s\n", message);
     }
 
-    // Notify all clients about the disconnection
+    // Notifica os clientes sobre desconexões
     snprintf(message, sizeof(message), "[%s left the chat]", name);
     pthread_mutex_lock(&mutex);
     for (int i = 0; i < MAX_CLIENTS; i++)
@@ -105,14 +109,14 @@ void *handle_client(void *client_socket)
     }
     pthread_mutex_unlock(&mutex);
 
-    // Remove the client from the list and close the socket
+    // Remove o cliente da lista e fecha seu socket
     pthread_mutex_lock(&mutex);
     for (int i = 0; i < MAX_CLIENTS; i++)
     {
         if (client_sockets[i] == sock)
         {
             client_sockets[i] = 0;
-            bzero(client_names[i], 50); // Clear the client's name
+            bzero(client_names[i], 50); // Limpa o nome do cliente
             break;
         }
     }
