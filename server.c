@@ -41,7 +41,7 @@ void *handle_client(void *client_socket)
         pthread_mutex_unlock(&mutex);
 
         if (name_exists) {
-            // If it already exists, request another
+            // Se o nome já existe, pede por outro
             char name_error_message[256];
             snprintf(name_error_message, sizeof(name_error_message), "Unfortunately, the username \"%s\" is already in use. Please, choose another name: ", name);
             send(sock, name_error_message, strlen(name_error_message), 0);
@@ -52,7 +52,7 @@ void *handle_client(void *client_socket)
         }
     }
 
-    // Store the client name in the array
+    // Guarda o nome do cliente no array
     pthread_mutex_lock(&mutex);
     for (int i = 0; i < MAX_CLIENTS; i++)
     {
