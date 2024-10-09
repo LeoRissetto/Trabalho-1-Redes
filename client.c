@@ -21,12 +21,14 @@ void clear_screen()
     printf("\033[H\033[J");
 }
 
+// Função para gerenciar o recebimento de mensagens por parte dos clientes conectados ao server
 void *receive_messages(void *sock)
 {
     int server_sock = *(int *)sock;
     char buffer[BUFFER_SIZE];
     int n;
 
+    // Recebe mensagens do servidor
     while ((n = recv(server_sock, buffer, sizeof(buffer), 0)) > 0)
     {
         buffer[n] = '\0';
@@ -59,6 +61,7 @@ int main()
     pthread_t tid;
     char name[50];
 
+    // Criando um socket TCP/IP para comunicação de rede
     sock = socket(AF_INET, SOCK_STREAM, 0);
     if (sock < 0)
     {
@@ -67,11 +70,13 @@ int main()
     }
     printf("\n[+] TCP Client Socket Created.\n");
 
+    // Definindo a porta e os endereços de IP
     memset(&addr, '\0', sizeof(addr));
     addr.sin_family = AF_INET;
     addr.sin_port = htons(PORT);
     addr.sin_addr.s_addr = inet_addr("127.0.0.1");
 
+    // Tentando conectar o socket do cliente ao endereço do servidor
     if (connect(sock, (struct sockaddr *)&addr, sizeof(addr)) < 0)
     {
         perror("[-] Connect Error");
@@ -79,6 +84,7 @@ int main()
     }
     printf("\n[+] Connected to the Server.\n");
 
+    // Requisita o nome do cliente e envia ao servidor
     printf("\nEnter your name: ");
     fgets(name, 50, stdin);
     name[strcspn(name, "\n")] = '\0';
@@ -90,27 +96,22 @@ int main()
     printf("> ");
     fflush(stdout);
 
+    // Cria uma thread para lidar com o recebimento de mensagens por parte dos usuários conectados ao servidor
     pthread_create(&tid, NULL, receive_messages, &sock);
     
-    int first_time = 0;
+    // Loop para enviar as mensagens no chat
     while (1)
     {   
-        if (first_time++ == 0){
-            clear_screen();
-        }
         bzero(buffer_send, BUFFER_SIZE);
         fgets(buffer_send, BUFFER_SIZE, stdin);
         buffer_send[strcspn(buffer_send, "\n")] = '\0';
         send(sock, buffer_send, strlen(buffer_send), 0);
-        // int bytes_sent = send(sock, buffer_send, strlen(buffer_send), 0);
-        // if (bytes_sent == -1){
-        //     perror("Error while reaching the server.");
-        // }
 
         clear_line();
         fflush(stdout);
     }
-
+    
+    // Fim, fecha o socket
     close(sock);
     printf("[-] Disconnected from the Server.\n");
 

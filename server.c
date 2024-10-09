@@ -43,7 +43,7 @@ void *handle_client(void *client_socket)
         if (name_exists) {
             // If it already exists, request another
             char name_error_message[256];
-            snprintf(name_error_message, sizeof(name_error_message), "Unfortunately, the username \"%s\" is already in use. Please, choose another name: ]", name);
+            snprintf(name_error_message, sizeof(name_error_message), "Unfortunately, the username \"%s\" is already in use. Please, choose another name: ", name);
             send(sock, name_error_message, strlen(name_error_message), 0);
             bzero(name, 50);
         } else {
@@ -134,13 +134,14 @@ int main()
     socklen_t addr_size;
     pthread_t tid;
 
-    // Initialize client sockets array
+    // Inicializa o array dos sockets dos clientes
     for (int i = 0; i < MAX_CLIENTS; i++)
     {
         client_sockets[i] = 0;
         bzero(client_names[i], 50);
     }
 
+    // Cria um socket TCP/IP para comunicação de rede
     server_sock = socket(AF_INET, SOCK_STREAM, 0);
     if (server_sock < 0)
     {
@@ -149,23 +150,28 @@ int main()
     }
     printf("\n[+] TCP Server Socket Created.\n");
 
+    // Definindo a porta e os endereços de IP
     memset(&server_addr, '\0', sizeof(server_addr));
     server_addr.sin_family = AF_INET;
     server_addr.sin_port = htons(PORT);
     server_addr.sin_addr.s_addr = inet_addr("127.0.0.1");
 
+    // Vincula o socket do servidor ao endereço IP e à porta especificados
     if (bind(server_sock, (struct sockaddr *)&server_addr, sizeof(server_addr)) < 0)
     {
         perror("[-] Bind Error");
         exit(1);
     }
-    printf("\n[+] Bind to th e port number: %d.\n", PORT);
+    printf("\n[+] Bind to the port number: %d.\n", PORT);
 
+    // Escuta as conexões
     listen(server_sock, 5);
     printf("\nListening...\n");
 
+    // Loop para gerenciar as conexões dos clientes com o servidor
     while (1)
     {
+        // Aceitando a conexão
         addr_size = sizeof(client_addr);
         client_sock = accept(server_sock, (struct sockaddr *)&client_addr, &addr_size);
         if (client_sock < 0)
@@ -174,7 +180,7 @@ int main()
             exit(1);
         }
 
-        // Add new client socket to the array
+        // Adiciona o novo socket do cliente ao array
         pthread_mutex_lock(&mutex);
         for (int i = 0; i < MAX_CLIENTS; i++)
         {
@@ -186,10 +192,11 @@ int main()
         }
         pthread_mutex_unlock(&mutex);
 
-        // Create a new thread for each client
+        // Cria uma thread para cada novo cliente
         pthread_create(&tid, NULL, handle_client, &client_sock);
     }
 
+    // Fim, fecha o socket do servidor
     close(server_sock);
     return 0;
 }
