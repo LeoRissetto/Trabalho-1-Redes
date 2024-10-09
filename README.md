@@ -1,8 +1,8 @@
-# Projeto de Cliente-Servidor em C
+# Projeto de Chat Cliente-Servidor em C
 
-## Disciplina: Redes de Computadores
+Projeto 1 da disicplina de Redes de Computadores, ministrada pelo Prof. Dr. Rodolfo Ipolito Meneguette.
 
-## Membros do Grupo
+### Membros do Grupo
 
 - Leonardo Gueno Rissetto (13676482)
 - Lucas Lima Romero (13676325)
@@ -16,20 +16,16 @@ Este projeto implementa um sistema de chat em tempo real utilizando a arquitetur
 ## 2. Objetivos
 O objetivo deste projeto é desenvolver um sistema de chat que permita a comunicação em tempo real entre múltiplos usuários. O sistema foi desenvolvido para aprimorar o entendimento sobre a implementação de protocolos de comunicação e o uso de threads em C.
 
-### Específicos:
-- Implementar um servidor que aceita conexões de múltiplos clientes.
-- Permitir que clientes se comuniquem entre si enviando mensagens.
+Mais Especificamente, os objetivos deste projeto são:
+- Implementar um servidor que aceita conexões de múltiplos clientes;
+- Permitir que clientes se comuniquem entre si enviando mensagens;
 - Gerenciar a sincronização de mensagens entre diferentes clientes utilizando mutexes.
 
-## 3. Materiais e Métodos
-### Materiais:
+## 3. Requisitos
+### Materiais utilizados:
 - **Linguagem de programação**: C
 - **Bibliotecas utilizadas**: `<stdio.h>`, `<string.h>`, `<stdlib.h>`, `<unistd.h>`, `<arpa/inet.h>`, `<pthread.h>`
-
-### Métodos:
-O projeto consiste em duas partes principais: o servidor e o cliente. 
-- **Servidor**: Escuta por conexões de clientes e gerencia a comunicação entre eles.
-- **Cliente**: Conecta ao servidor, envia mensagens e recebe mensagens de outros clientes.
+- **Sistemas Operacionais suportados:** MacOS e Linux (Ubuntu 20.04)
 
 ## 4. Descrição
 ### Servidor:
@@ -44,27 +40,26 @@ O projeto consiste em duas partes principais: o servidor e o cliente.
 
 ## 5. Instruções de Compilação
 Para compilar o projeto, utilize o Makefile incluído. Execute os seguintes comandos no terminal:
-
+```
 make          # Compila ambos os binários (servidor e cliente)
-
+```
+```
 make clean    # Remove os binários compilados
+```
 
 ## 6. Execução
 
 Para executar o servidor e o cliente, siga os passos abaixo:
 
 1. No terminal, inicie o servidor:
-   
+```
 ./server
+```
 
-2. Em outro terminal, inicie o cliente:
-
+2. Em outros terminais, inicie o cliente:
+```
 ./client
+```
 
-3. Siga as instruções no terminal do cliente para entrar no chat.
-
-## 7. Conclusão
-
-Este projeto demonstrou como implementar um sistema de chat em tempo real usando sockets e threads em C. Ele fornece uma base sólida para o entendimento de comunicação em rede e gerenciamento de múltiplas conexões.
-
+3. Digite um nome de usuário e comece a enviar suas mensagens! O nome escolhido não pode ser o mesmo de alguém que já esteja na sala.
 
