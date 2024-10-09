@@ -2,6 +2,8 @@
 
 Projeto 1 da disicplina de Redes de Computadores, ministrada pelo Prof. Dr. Rodolfo Ipolito Meneguette.
 
+Link para o vídeo: https://youtu.be/W2vE-H8AYNA
+
 ### Membros do Grupo
 
 - Leonardo Gueno Rissetto (13676482)
